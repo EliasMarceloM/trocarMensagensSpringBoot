@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Login</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+    <h1>Login</h1>
+
+    <!-- Formulário de login -->
+    <form th:action="@{/logado}" method="post" th:object="${user}">
+        <div>
+            <label for="username">Usuário:</label>
+            <input type="text" id="username" name="username" th:field="*{nome}"required />
+        </div>
+        <div>
+            <label for="password">Senha:</label>
+            <input type="password" id="password" name="password" th:field="*{password}" required />
+        </div>
+        <div>
+            <button type="submit">Entrar</button>
+        </div>
+    </form>
+
+    <!-- Mensagem de erro ou sucesso -->
+    <p th:text="${mensagem}">Mensagem padrão.</p>
+
+</body>
+</html>

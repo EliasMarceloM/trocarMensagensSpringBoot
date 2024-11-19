@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Feed</title>
+</head>
+<body>
+    <h1>Mensagens</h1>
+
+    <!-- Exibir mensagens antigas -->
+    <div th:if="${objeto != null and not #lists.isEmpty(objeto.oldMessages)}">
+        <div th:each="message : ${objeto.oldMessages}">
+            <p>
+                <strong th:text="${message.author.nome}"></strong>: 
+                <span th:text="${message.content}"></span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Caso não haja mensagens -->
+    <div th:if="${objeto == null or #lists.isEmpty(objeto.oldMessages)}">
+        <p>Nenhuma mensagem para exibir</p>
+    </div>
+
+    <!-- Formulário para enviar novas mensagens -->
+    <h2>Nova Mensagem</h2>
+    <form action="/feedSalve" method="POST"> <!-- Alterado para POST para enviar o conteúdo -->
+    
+        <!-- Campo para o conteúdo da mensagem -->
+        <div>
+            <label for="content">Mensagem:</label>
+            <textarea id="content" name="content" rows="4" required></textarea>
+        </div>
+
+        <!-- Botão de envio -->
+        <div>
+            <button type="submit">Enviar</button>
+        </div>
+    </form>
+
+</body>
+</html>

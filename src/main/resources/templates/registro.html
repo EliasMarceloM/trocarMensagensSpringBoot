@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Registro de novo usuário</title>
+    <meta charset="UTF-8">
+</head>
+<body th:object="${tolkenDTO}">
+	
+    <h1>Registro de Novo usuário</h1>
+	
+ <script>
+ 		alert("java script está funcionado");
+ 		//<p>Token: <span id="token" th:text="*{tolken}"></span></p>
+       
+ 		function capiturarTolken(){
+ 			const token = document.getElementById('token').textContent;
+ 	        
+ 	        // Salvar no cookie (expira em 1 hora)
+ 	        const expires = new Date();
+ 	        expires.setHours(expires.getHours() + 1);
+ 	        document.cookie = "JSESSIONID=" + token + ";expires=" + expires.toUTCString() + ";path=/";
+ 	        alert(token);
+ 			
+ 		}
+ 	
+        
+        
+        localStorage.setItem('gato', 'gato token');
+      
+        fetch('/registrar', {
+            method: 'GET',
+            headers: {
+            	'gato': 'loiro'
+            },
+            body: JSON.stringify({ 'gato':'verde' })
+        });
+
+        //------------------registrar2------------------
+        function autorizado(){
+        	 // Primeiro fetch para registrar
+            fetch('/registrar')
+                .then(response => {
+                    const tokenFromResponse = response.headers.get('token');
+                    console.log("Token da resposta:", tokenFromResponse);
+                    if (tokenFromResponse) {
+                        // Armazena o token no Local Storage
+                        localStorage.setItem('token', tokenFromResponse);
+                        alert("Token armazenado no Local Storage!");
+
+                        // Agora, faça a segunda requisição com o token
+                        return fetch('http://localhost:8080/seu link', {
+                            method: 'GET',
+                            headers: {
+                            	'gato': 'token do gato'
+                            }
+                        });
+                    } else {
+                        console.error('Token não encontrado nos headers');
+                    }
+                })
+                .then(response => {
+                    // Aqui você pode processar a resposta da segunda requisição
+                    if (response.ok) {
+                        console.log("Acesso ao endpoint realizado com sucesso.");
+                    } else {
+                        console.error("Erro ao acessar o endpoint.");
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        	
+        	
+        	
+        }
+        
+        //------------------registrar2end---------------
+        
+              //------------------registrar2------------------
+        function registrar2(){
+        	 // Primeiro fetch para registrar
+            fetch('/registrar')
+                .then(response => {
+                    const tokenFromResponse = response.headers.get('token');
+                    console.log("Token da resposta:", tokenFromResponse);
+                    if (tokenFromResponse) {
+                        // Armazena o token no Local Storage
+                        localStorage.setItem('token', tokenFromResponse);
+                        alert("Token armazenado no Local Storage!");
+
+                        // Agora, faça a segunda requisição com o token
+                        return fetch('http://localhost:8080/seu link', {
+                            method: 'GET',
+                            headers: {
+                            	'Authorization': tokenFromResponse
+                            }
+                        });
+                    } else {
+                        console.error('Token não encontrado nos headers');
+                    }
+                })
+                .then(response => {
+                    // Aqui você pode processar a resposta da segunda requisição
+                    if (response.ok) {
+                        console.log("Acesso ao endpoint realizado com sucesso.");
+                    } else {
+                        console.error("Erro ao acessar o endpoint.");
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        	
+        	
+        	
+        }
+        
+        //------------------registrar2end---------------
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        autorizado(); 
+        registrar2();
+        capiturarTolken(); 
+</script>
+
+
+    <!-- Formulário de login -->
+    <form th:action="@{/registrar}" method="post" th:object="${user}">
+        <div>
+            <label for="username">Usuário:</label>
+            <input type="text" id="username" name="username" th:field="*{nome}"required />
+        </div>
+        <div>
+            <label for="password">Senha:</label>
+            <input type="password" id="password" name="password" th:field="*{password}" required />
+        </div>
+        <div>
+            <button type="submit">Entrar</button>
+        </div>
+    </form>
+
+    <!-- Mensagem de erro ou sucesso -->
+    <p th:text="${mensagem}">Mensagem padrão.</p>
+
+</body>
+</html>
